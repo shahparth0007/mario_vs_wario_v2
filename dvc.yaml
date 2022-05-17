@@ -1,0 +1,31 @@
+stages:
+  get_videos:
+    cmd: python src/get_videos.py
+    deps:
+    - src/config.py
+    outs:
+    - data/videos
+  extract_frames:
+    cmd: python src/extract_frames.py
+    deps:
+    - data/videos
+    - src/config.py
+    - src/utils.py
+    outs:
+    - data/raw
+  create_train_test_split:
+    cmd: python src/create_train_test_split.py
+    deps:
+    - data/raw
+    - src/config.py
+    outs:
+    - data/processed
+  train:
+    cmd: python src/train.py
+    deps:
+    - data/processed/
+    - src/config.py
+    outs:
+    - metrics.csv
+    - models
+    - params.yml
